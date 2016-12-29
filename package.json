@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/charazn/nh_getting_started_with_nodejs/issues"
   },
-  "homepage": "https://github.com/charazn/nh_getting_started_with_nodejs#readme"
+  "homepage": "https://github.com/charazn/nh_getting_started_with_nodejs#readme",
+  "dependencies": {
+    "lodash": "^4.17.3"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
 }
