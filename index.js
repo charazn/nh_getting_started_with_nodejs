@@ -1,22 +1,99 @@
-require('./app/index') 
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Strict_mode
+// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
+'use strict'
+require('./app/index')
 
-const path = require('path')  
-const express = require('express')  
+const path = require('path')
+const express = require('express')
 const exphbs = require('express-handlebars')
 const port = 3000
 const app = express()
+// const users = [] // Storing users in memory
+const fs = require('fs')
+const pg = require('pg')
+const conString = 'postgres://@localhost/node_hero' // make sure to match your own database's credentials
+const bodyParser = require('body-parser') // To be able to read req.body in POST request
+// http://stackoverflow.com/questions/5710358/how-to-retrieve-post-query-parameters
 
-app.engine('.hbs', exphbs({  
+app.use(bodyParser.json()) // seems to follow sequence use, set, engine???
+app.use(bodyParser.urlencoded({ extended: true })) // This must be enabled for x-www-form-urlencoded to work in body
+
+app.engine('.hbs', exphbs({
   defaultLayout: 'main',
   extname: '.hbs',
   layoutsDir: path.join(__dirname, 'views/layouts')
 }))
-app.set('view engine', '.hbs')  
+app.set('view engine', '.hbs')
 app.set('views', path.join(__dirname, 'views'))
 
-app.get('/', (request, response) => {  
+app.get('/', (request, response) => {
   response.render('home', {
     name: 'John'
+  })
+})
+
+// Storing users in memory
+// app.post('/users', function (req, res) {  
+//   // retrieve user posted data from the body
+//   const user = req.body
+//   users.push({
+//     name: user.name,
+//     age: user.age
+//   })
+//   res.send('successfully registered')
+// })
+
+// Storing users in a file using fs
+// app.post('/users', function (req, res) {
+//   const user = req.body
+//   fs.appendFile('users.txt', JSON.stringify({ name: user.name, age: user.age }), (err) => {
+//     res.send('successfully registered')
+//   })
+// })
+
+// Storing users in a postgresql database
+// Use ExpressJS to Get URL and POST Parameters https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters
+app.post('/users', function (req, res, next) {
+  // var name = req.body.name
+  // var age = req.body.age
+  var user = req.body
+  console.log(user) // Returns a json object
+
+  pg.connect(conString, function (err, client, done) {
+    if (err) {
+      // pass the error to the express error handler
+      return next(err)
+    }
+    client.query('INSERT INTO users (name, age) VALUES ($1, $2);', [user.name, user.age], function (err, result) {
+      done() //this done callback signals the pg driver that the connection can be closed or returned to the connection pool
+
+      if (err) {
+        // pass the error to the express error handler
+        return next(err)
+      }
+
+      res.send(user.name + ' ' + user.age)
+      // res.sendStatus(200)
+    })
+  })
+})
+
+app.get('/users', function (req, res, next) {
+  pg.connect(conString, function (err, client, done) {
+    if (err) {
+      // pass the error to the express error handler
+      return next(err)
+    }
+    client.query('SELECT name, age FROM users;', [], function (err, result) {
+      done()
+
+      if (err) {
+        // pass the error to the express error handler
+        return next(err)
+      }
+
+      res.json(result.rows)
+    })
   })
 })
 
