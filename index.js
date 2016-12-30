@@ -1,22 +1,40 @@
 require('./app/index') 
 
-const http = require('http')  
+// Writing server code using Expressjs
+const express = require('express')  
+const app = express()  
 const port = 3000
 
-const requestHandler = (request, response) => {  
-  console.log(request.url)
-  response.end('Hello Node.js Server!')
-}
+app.get('/', (request, response) => {  
+  response.send('Hello from Express!')
+})
 
-const server = http.createServer(requestHandler)
-
-server.listen(port, (err) => {  
+app.listen(port, (err) => {  
   if (err) {
     return console.log('something bad happened', err)
   }
 
   console.log(`server is listening on ${port}`)
 })
+
+// Writing server code with Nodejs
+// const http = require('http')  
+// const port = 3000
+
+// const requestHandler = (request, response) => {  
+//   console.log(request.url)
+//   response.end('Hello Node.js Server!')
+// }
+
+// const server = http.createServer(requestHandler)
+
+// server.listen(port, (err) => {  
+//   if (err) {
+//     return console.log('something bad happened', err)
+//   }
+
+//   console.log(`server is listening on ${port}`)
+// })
 
 // Notes for Chapter 3 Asynchronous Programming in Nodejs
 

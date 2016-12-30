@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "test": "mocha test"
-    // "your-custom-script": "echo npm"
   },
   "repository": {
     "type": "git",
@@ -24,6 +23,7 @@
   },
   "homepage": "https://github.com/charazn/nh_getting_started_with_nodejs#readme",
   "dependencies": {
+    "express": "^4.14.0",
     "lodash": "^4.17.3"
   },
   "devDependencies": {
