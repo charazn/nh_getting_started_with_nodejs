@@ -4,8 +4,9 @@ require('./app/index')
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
-const port = 3000
+// const port = 3000
 const app = express()
+app.set('port', (process.env.PORT || 5000)) // From Getting Started on Heroku with Node.js
 
 const fs = require('fs')
 const pg = require('pg')
@@ -68,5 +69,7 @@ app.get('/users', function (req, res, next) {
   })
 })
 
-console.log('Browser listening on port 3000....')
-app.listen(port)
+app.listen(app.get('port'), function (err) { // From Getting Started on Heroku with Node.js
+  if (err) throw err // I added in the err
+  console.log('Node app is running on port', app.get('port'))
+})
