@@ -1,6 +1,24 @@
 require('./app/index') 
 
-// Notes for Chapter Asynchronous Programming in Nodejs
+const http = require('http')  
+const port = 3000
+
+const requestHandler = (request, response) => {  
+  console.log(request.url)
+  response.end('Hello Node.js Server!')
+}
+
+const server = http.createServer(requestHandler)
+
+server.listen(port, (err) => {  
+  if (err) {
+    return console.log('something bad happened', err)
+  }
+
+  console.log(`server is listening on ${port}`)
+})
+
+// Notes for Chapter 3 Asynchronous Programming in Nodejs
 
 // Asynchronous programming can only be achieved with functions being first- class citizens of the language: they can be passed around like any other variables to other functions.
 // Functions that can take other functions as arguments are called higher- order functions.
@@ -27,3 +45,4 @@ require('./app/index')
 
 // Async.js https://github.com/caolan/async
 // http://caolan.github.io/async/
+
