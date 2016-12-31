@@ -49,3 +49,7 @@ jspm_packages
 .yarn-integrity
 
 # .DS_Store
+.DS_Store
+
+# env variables
+.env
