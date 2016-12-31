@@ -10,7 +10,7 @@ app.set('port', (process.env.PORT || 5000)) // From Getting Started on Heroku wi
 
 const fs = require('fs')
 const pg = require('pg')
-const conString = 'postgres://@localhost/node_hero'
+// const conString = 'postgres://@localhost/node_hero'
 const bodyParser = require('body-parser') 
 
 app.use(bodyParser.json()) 
@@ -32,10 +32,10 @@ app.get('/', (request, response) => {
 
 app.post('/users', function (req, res, next) {
   // var user = req.body
-  var user = req.query // Alternative to using req.body, just enter ?name=myname&age=number in the url, but must still use Postmas to make the POST request
+  var user = req.query // Alternative to using req.body, just enter ?name=myname&age=number in the url, but must still use Postman to make the POST request
   console.log(user) 
 
-  pg.connect(conString, function (err, client, done) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     if (err) {
       return next(err)
     }
@@ -53,7 +53,7 @@ app.post('/users', function (req, res, next) {
 })
 
 app.get('/users', function (req, res, next) {
-  pg.connect(conString, function (err, client, done) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     if (err) {
       return next(err)
     }
