@@ -11,6 +11,7 @@ app.set('port', (process.env.PORT || 5000)) // From Getting Started on Heroku wi
 const fs = require('fs')
 const pg = require('pg')
 // const conString = 'postgres://@localhost/node_hero'
+// Command to access database from terminal "/Applications/Postgres.app/Contents/Versions/9.6/bin/psql" -p5432 -d "node_hero"
 const bodyParser = require('body-parser') 
 
 app.use(bodyParser.json()) 
